@@ -10,7 +10,8 @@ class MyPushButton : public QPushButton
 public:
     MyPushButton(QString normalImgPath, QString pressImgPath = "", QWidget *parent = nullptr);
     void paintEvent(QPaintEvent *event);
-
+    void mousePressEvent(QMouseEvent* e);
+    void mouseReleaseEvent(QMouseEvent* e);
     QString mNormalImgPath;
     QString mPressedImgPath;
     void moveDown();

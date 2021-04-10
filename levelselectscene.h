@@ -10,7 +10,7 @@ public:
     explicit LevelSelectScene(QWidget *parent = nullptr);
     void paintEvent(QPaintEvent* event);
 signals:
-
+    void backBtnClicked();
 };
 
 #endif // LEVELSELECTSCENE_H

@@ -16,6 +16,8 @@ void MyPushButton::paintEvent(QPaintEvent *event){
     QPainter paint(this);
     QPixmap pix=this->icon().pixmap(this->width(), this->height());
     paint.drawPixmap(0,0,this->width(),this->height(),pix);
+
+    paint.drawText(0,0, this->width(), this->height(), Qt::AlignVCenter | Qt::AlignHCenter, this->text());
 }
 
 void MyPushButton::moveDown(){
@@ -40,4 +42,28 @@ void MyPushButton::moveUp(){
                                  this->width(),
                                  this->height()));
     animation->start(QPropertyAnimation::DeleteWhenStopped);
+}
+
+void MyPushButton::mousePressEvent(QMouseEvent *e){
+    QPushButton::mousePressEvent(e);//除了换图，其它事情要交给父亲处理
+    if(!mPressedImgPath.isEmpty()){
+        QPixmap pixmap;
+        bool ret = pixmap.load(mPressedImgPath);
+        if(!ret){
+            qDebug()<<"加载图片"<< mPressedImgPath <<"失败";
+        }
+        this->setIcon(pixmap);
+    }
+}
+
+void MyPushButton::mouseReleaseEvent(QMouseEvent* e){
+    QPushButton::mouseReleaseEvent(e);
+    if(!mNormalImgPath.isEmpty()){
+        QPixmap pixmap;
+        bool ret = pixmap.load(mNormalImgPath);
+        if(!ret){
+            qDebug()<<"加载图片"<< mNormalImgPath <<"失败";
+        }
+        this->setIcon(pixmap);
+    }
 }

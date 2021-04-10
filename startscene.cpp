@@ -1,4 +1,5 @@
 ﻿#include "startscene.h"
+#include "playscene.h"
 #include <QTimer>
 StartScene::StartScene(QWidget *parent) : MainWindow(parent)
 {
@@ -18,6 +19,12 @@ StartScene::StartScene(QWidget *parent) : MainWindow(parent)
         level->setAttribute(Qt::WA_DeleteOnClose);
         level->show();
         this->hide();
+
+        connect(level, &LevelSelectScene::backBtnClicked, [=](){
+            this->show();
+            level->close();
+        });
+
     });
 });
 

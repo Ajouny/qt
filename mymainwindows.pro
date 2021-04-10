@@ -10,6 +10,7 @@ TEMPLATE = app
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
+    coinbutton.cpp \
     levelselectscene.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -18,6 +19,7 @@ SOURCES += \
     startscene.cpp
 
 HEADERS += \
+    coinbutton.h \
     levelselectscene.h \
     mainwindow.h \
     mypushbutton.h \

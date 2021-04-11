@@ -1,8 +1,25 @@
 ﻿#include "coinbutton.h"
+#include <QTimer>
 
 CoinButton::CoinButton(QWidget *parent) : QPushButton(parent)
 {
     setStyleSheet("QPushButton{border:None;}");
+
+    mTimer = new QTimer(this);
+    connect(mTimer, &QTimer::timeout, [=](){
+        if(mStat){
+            --mFrameNo;
+        }else{
+            ++mFrameNo;
+        }
+        if(mFrameNo == 1 || mFrameNo == 8){
+            mTimer->stop();
+        }
+        QString iconName =
+                QString(":/res/Coin000%1.png").arg(mFrameNo);
+        setIcon(QIcon(iconName));
+    });
+
 }
 int CoinButton::stat() const
 {
@@ -28,5 +45,15 @@ void CoinButton::paintEvent(QPaintEvent *e){
 }
 
 void CoinButton::flip(){
-        setStat(!mStat);
+        setStatWithAnimation(!this->stat());
+}
+
+void CoinButton::setStatWithAnimation(int stat){
+    mStat = stat;
+    if(mStat){
+        this->mFrameNo = 8;
+    }else{
+        this->mFrameNo = 1;
+    }
+    this->mTimer->start(30);
 }

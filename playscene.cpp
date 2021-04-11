@@ -1,9 +1,14 @@
 ﻿#include "playscene.h"
 #include "mypushbutton.h"
 #include "coinbutton.h"
+#include "dataconfig.h"
 #include <QMenuBar>
 #include <QPainter>
 #include <QLabel>
+#include <QVector>
+#include <QTimer>
+#include <QMessageBox>
+#include <QString>
 
 PlayScene::PlayScene(QWidget *parent) : MainWindow(parent){}
 
@@ -43,15 +48,16 @@ PlayScene::PlayScene(int level, QWidget* parent) : MainWindow(parent){
             int x = column * columnWidth + xOffset;
             int y = row * rowHeight + yOffset;
             CoinButton *btn = new CoinButton(this);
+            mCoinBtns[row][column] = btn;
             btn->setGeometry(x, y, coinWidth, coinHeight);
-            btn->setStat(1);
+            DataConfig config;
+            QVector <QVector<int>> levelData = config.mData[level];
+            btn->setStat(levelData[row][column]);
             connect(btn, &CoinButton::clicked, [=](){
-                btn->flip();
+                this->flipCoin(row, column);
             });
         }
     }
-
-
 
 }
 
@@ -63,4 +69,38 @@ void PlayScene::paintEvent(QPaintEvent *event){
     painter.drawPixmap(0,0, this->width(),this->height(),pix);
     pix.load(":/res/Title.png");
     painter.drawPixmap(0,0,pix.width()*0.5, pix.height()*0.5, pix);
+}
+
+void PlayScene::flipCoin(int row, int col){
+    if(mHasWin == 0){
+        this->mCoinBtns[row][col]->flip();
+
+        QTimer::singleShot(300,[=](){
+            if(row - 1 >= 0){
+                this->mCoinBtns[row - 1][col]->flip();
+            }
+            if(row + 1 <4){
+                this->mCoinBtns[row+1][col]->flip();
+            }
+            if(col + 1 < 4){
+                this->mCoinBtns[row][col+1]->flip();
+            }
+            if(col -1 >= 0){
+                this->mCoinBtns[row][col-1]->flip();
+            }
+            mHasWin = judgeWin();
+        });
+    }
+}
+
+int PlayScene::judgeWin(){
+    for(int row = 0; row < 4; ++row){
+        for(int col = 0; col < 4; ++col){
+            if(mCoinBtns[row][col]->stat() == 0){
+                return 0;
+            }
+        }
+    }
+    QMessageBox::information(this, QString::fromUtf16(u"恭喜"), QString::fromUtf16(u"你已经胜利了"));
+    return 1;
 }

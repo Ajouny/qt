@@ -14,7 +14,11 @@ public:
     void setStat(int stat);
     void paintEvent(QPaintEvent *e);
     void flip();
+    void setStatWithAnimation(int stat);
+
 private:
+    int mFrameNo;
+    QTimer *mTimer;
     int mStat;
 signals:
 

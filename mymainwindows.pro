@@ -11,6 +11,7 @@ TEMPLATE = app
 DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     coinbutton.cpp \
+    dataconfig.cpp \
     levelselectscene.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
 
 HEADERS += \
     coinbutton.h \
+    dataconfig.h \
     levelselectscene.h \
     mainwindow.h \
     mypushbutton.h \
